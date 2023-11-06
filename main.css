@@ -1,0 +1,69 @@
+html{
+    height: 100%;
+    
+}
+body{
+    min-height: 100vh;
+    margin: 0;
+}
+/*Header*/
+header{
+    text-align: center;
+    margin: 0;
+}
+header h1{
+    font-size: 30px;
+    background: rgb(230, 155, 27);
+    margin: 0;
+    padding: 20px;
+    text-decoration:underline;
+}
+/*Main*/
+main{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 200px, 1fr;
+    grid-template-areas: ". Rubrik ."
+                        "U1 U2 U3";
+    text-align: center;
+    max-width: 90%;
+    margin: 30px auto;
+    gap: 20px;
+}
+#U1, #U2, #U3{
+    border:2px solid black;
+    border-radius: 15px;
+    padding-bottom: 20px;
+    background: rgb(231, 231, 231);
+}
+main h2{
+    grid-area: Rubrik;
+}
+main h4{
+    text-decoration: underline;
+}
+main a{
+    display:block;
+    background: rgb(255, 255, 255);
+    max-width: 55%;
+    margin: 10px auto;
+    padding: 20px 0;
+    text-decoration: none;
+    color: black;
+    border-radius: 20px;
+    font-size: 20px;
+    border:2px solid black;
+}
+main a:hover{
+    background: rgb(116, 118, 107);
+    color: white;
+}
+#U1{
+    grid-area: U1;
+}
+#U2{
+    grid-area: U2;
+}
+#U3{
+    grid-area: U3;
+}

@@ -15,4 +15,19 @@ function init() {
 	
 } // Slut init
 window.addEventListener("load", init);
+function showOptionsDialog(){
+
+}
+function closeOptionsDialog(){
+
+}
+function newGame(){
+
+}
+function endGame(){
+
+}
+function throwOneDie(){
+    
+}
 // --------------------------------------------------
