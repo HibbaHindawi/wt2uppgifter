@@ -97,7 +97,7 @@ function throwAllDice() {
     resElem.innerText = "Summa = " + sum;
 }
 
-//Genererar en värde och ändrar tärningens id + värde
+//Genererar en slumpmässig värde och ändrar tärningens id + värde
 function throwDie(id) {
     let dieElem = document.querySelector("#" + id);
     dieElem.classList.toggle("rotateDie");
