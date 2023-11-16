@@ -7,6 +7,7 @@ let formElem;   // Elementet med hela formuläret (form-elementet)
 // --------------------------------------------------
 // Initiera globala variabler och händelsehanterare. Lägg till info om pris.
 function init() {
+	document.querySelector("#send").addEventListener("click", calculateCost);
 	formElem = document.querySelector("#booking");
 	for (let i = 0; i < formElem.roomType.length; i++) { /* Gå igenom alla radioknappar för rumstyp */
         let priceInfo =  "(" + roomPrice[i] + " kr)";
