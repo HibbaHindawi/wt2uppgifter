@@ -34,7 +34,7 @@ const laughSound = new Audio("sound/laugh.mp3");  // Audio-objekt med skratt
 punchSound.preload = "auto";    // Ladda in ljudfilerna till webbläsarens cache
 laughSound.preload = "auto";
 
-// --------------------------------------------------
+
 // Denna kod ligger inte i någon funktion, så den utförs, så fort js-filen läses in.
 // Koden ligger dock inom klamrar, eftersom de variabler som används inte behöver vara globala.
 // Bilderna laddas in i förväg, så att alla bilder finns i webbläsarens cache, när de behövs.
@@ -46,7 +46,7 @@ laughSound.preload = "auto";
     let img = new Image();
     img.src = "img/smack.png";
 }
-// --------------------------------------------------
+
 // Initiera globala variabler och händelsehanterare
 function init() {
     // Referenser till element i gränssnittet
@@ -67,17 +67,19 @@ function init() {
     stopBtn.disabled = true;
 
     /* === Tillägg i uppgiften === */
-    
+    pigElem = document.querySelector("#pig");
+    pigCounterElem = document.querySelector("#pigCounter");
+    hitCounterElem = document.querySelector("#hitCounter");
 
 } // Slut init
 window.addEventListener("load", init);
-// --------------------------------------------------
+
 // Val av bil genom menyn
 function chooseCar() {
     carElem.src = "img/" + carImgs[this.selectedIndex - 1];
     this.selectedIndex = 0;
 } // Slut chooseCar
-// --------------------------------------------------
+
 // Initiera spelet och starta bilens rörelse
 function startGame() {
     carMenu.disabled = true;
@@ -95,10 +97,14 @@ function startGame() {
     moveCar(); // Starta bilen
 
     /* === Tillägg i uppgiften === */
-    
-    
+    pigCounter = 0;
+    hitCounter = 0;
+    pigCounterElem.innerText = pigCounter;
+    hitCounterElem.innerText = hitCounter;
+    pigTimer = setTimeout(newPig, pigDuration);
+    catchedPig = true;    
 } // Slut startGame
-// --------------------------------------------------
+
 // Stoppa spelet
 function stopGame() {
     if (carTimer != null) clearTimeout(carTimer);
@@ -107,10 +113,10 @@ function stopGame() {
     stopBtn.disabled = true;
 
     /* === Tillägg i uppgiften === */
-    
-    
+    if (pigTimer != null) clearTimeout(pigTimer);
+    pigElem.style.visibility = "hidden";    
 } // Slut stopGame
-// --------------------------------------------------
+
 // Kontrollera tangenter och styr bilen. Anropas vid keydown.
 function checkKey(e) {
     switch (e.key) {
@@ -130,7 +136,7 @@ function checkKey(e) {
             break;
     }
 } // Slut checkKey
-// --------------------------------------------------
+
 // Flytta bilen ett steg framåt i bilens riktning
 function moveCar() {
     let b = boardElem.getBoundingClientRect();  // Gränsvärden för spelplanen
@@ -156,10 +162,48 @@ function moveCar() {
     carTimer = setTimeout(moveCar, carInterval);
 
     /* === Tillägg i uppgiften === */
-    
+    checkHit();
     
 } // Slut moveCar
-// --------------------------------------------------
 
 /* ===== Tillägg av nya funktioner i uppgiften ===== */
-
+function newPig(){
+    if (pigCounter < 10){
+        pigElem.style.visibility = "visible";
+        pigElem.src = "img/pig.png";
+        pigCounter++;
+        pigCounterElem = pigCounter;
+        setTimeout(newPig, pigDuration);
+        catchedPig = false;
+    }
+    else{
+        stopGame();
+    }
+}
+function checkHit(){
+    if (catchedPig) {
+        return;
+    }
+    if (elementsOverlap(pigElem, carElem)) {
+        clearTimeout(setTimeout(newPig, pigDuration));
+        hitCounter++;
+        hitCounterElem.innerText = hitCounter;
+        pigElem.src = "img/smack.png";
+        punchSound.play();
+        if (hitCounter == 5) {
+            laughSound.play();
+        }
+        catchedPig = true;
+        setTimeout(newPig, pigDuration);
+    }
+}
+function elementsOverlap(elem1, elem2) {
+    let r1 = elem1.getBoundingClientRect();
+    let r2 = elem2.getBoundingClientRect();
+    if (r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
