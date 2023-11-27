@@ -18,6 +18,12 @@ header h1{
     padding: 20px;
     text-decoration:underline;
 }
+header h2{
+    font-size: 18px;
+    background: rgb(230, 155, 27);
+    margin: 0;
+    padding: 20px;
+}
 /*Main*/
 main{
     display: grid;
