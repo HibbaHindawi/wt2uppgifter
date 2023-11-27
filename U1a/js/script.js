@@ -14,16 +14,19 @@ let sum = 0;            // Summan av kastade tärningar
 function init() {
     document.querySelector("#optionsBtn").addEventListener("click", showOptionsDialog); //Knappen för inställningar
     document.querySelector("#optionsOkBtn").addEventListener("click", closeOptionsDialog); //knappen OK i inställningar
+   
     //New Game och End Game
     document.querySelector("#newBtn").addEventListener("click", newGame);
     document.querySelector("#stopBtn").addEventListener("click", endGame);
     document.querySelector("#stopBtn").disabled = true; // Stänger av knappen end game
+   
     // Händelselyssnare för tärningar
     document.querySelector("#die1").addEventListener("click", throwOneDie);
     document.querySelector("#die2").addEventListener("click", throwOneDie);
     document.querySelector("#die3").addEventListener("click", throwOneDie);
     document.querySelector("#die4").addEventListener("click", throwOneDie);
     document.querySelector("#die5").addEventListener("click", throwOneDie);
+   
     // Referenser
     optionsDialog = document.querySelector("#options");
     rollElem = document.querySelector("#rollCounter");
@@ -35,14 +38,14 @@ window.addEventListener("load", init); //Kör igång init när sidan laddas fär
 //Öppnar inställningar
 function showOptionsDialog() {
     optionsDialog.showModal();
-}
+}//showOptionsDialog
 
 //Stänger inställningar och sparar variabler
 function closeOptionsDialog() {
     playerName = document.getElementById("player").value;
     maxNrOfRolls = document.getElementById("nrOfReroll").value;
     optionsDialog.close();
-}
+}//closeOptionsDialog
 
 // Startar ett nytt spel
 function newGame() {
@@ -50,11 +53,11 @@ function newGame() {
     nrOfRolls = maxNrOfRolls;
     rollElem.innerText = nrOfRolls;
     throwAllDice();
-}
+}//newGame
 
 //Avslutar spelet och räknar ut poäng
 function endGame() {
-    switch (sum){     //kollar hur många poäng man fick på tärningarna och omvandlar till spel poäng
+    switch (sum) {     //kollar hur många poäng man fick på tärningarna och omvandlar till spel poäng
         case 21:
             points = 3;
             break;
@@ -70,7 +73,7 @@ function endGame() {
     rollElem.innerText = nrOfRolls;
     resElem.innerText = playerName + ", summan blev " + sum + ", så du fick " + points + " poäng";
     stopBtn.disabled = true;
-}
+}//Slut endGame
 
 // Kastar en tärning
 function throwOneDie() {
@@ -89,20 +92,20 @@ function throwOneDie() {
         resElem.innerText = "Summa = " + sum;
         endGame();
     }
-}
+}//slut throwOneDie
 
 //Kastar alla tärningar
 function throwAllDice() {
     sum = throwDie("die1") + throwDie("die2") + throwDie("die3") + throwDie("die4") + throwDie("die5");
     resElem.innerText = "Summa = " + sum;
-}
+}//Slut throwAllDice
 
 //Genererar en slumpmässig värde och ändrar tärningens id + värde
 function throwDie(id) {
-    let dieElem = document.querySelector("#" + id);
+    let dieElem = document.querySelector("#" + id); //Sätter dieElem till bilden som blev klickad
     dieElem.classList.toggle("rotateDie");
-    let dieValue = Math.floor(6 * Math.random()) + 1;
+    let dieValue = Math.floor(6 * Math.random()) + 1; //Genererar ett nytt värde mellan 1-6
     dieElem.src = "img/dice/" + dieValue + ".png";
     dieElem.alt = dieValue;
     return dieValue;
-}
+}//Slut throwDie

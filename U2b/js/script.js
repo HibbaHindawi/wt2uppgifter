@@ -35,9 +35,7 @@ punchSound.preload = "auto";    // Ladda in ljudfilerna till webbläsarens cache
 laughSound.preload = "auto";
 
 
-// Denna kod ligger inte i någon funktion, så den utförs, så fort js-filen läses in.
-// Koden ligger dock inom klamrar, eftersom de variabler som används inte behöver vara globala.
-// Bilderna laddas in i förväg, så att alla bilder finns i webbläsarens cache, när de behövs.
+//Utförs när filen laddas in
 {
     for (let i = 0; i < carImgs.length; i++) {
         let img = new Image();
@@ -55,13 +53,16 @@ function init() {
     stopBtn = document.querySelector("#stopBtn");
     boardElem = document.querySelector("#board");
     carElem = document.querySelector("#car");
+    
     // Händelsehanterare för meny och knappar
     carMenu.addEventListener("change", chooseCar);
     startBtn.addEventListener("click", startGame);
     stopBtn.addEventListener("click", stopGame);
+    
     // Händelsehanterare för tangenter för att styra bilen
     document.addEventListener("keydown", checkKey);
-    // Aktivera/inaktivera meny och knappar
+    
+    // Aktiverar/inaktiverar meny och knappar
     carMenu.disabled = false;
     startBtn.disabled = false;
     stopBtn.disabled = true;
@@ -102,7 +103,7 @@ function startGame() {
     pigCounterElem.innerText = pigCounter;
     hitCounterElem.innerText = hitCounter;
     pigTimer = setTimeout(newPig, pigDuration);
-    catchedPig = true;    
+    catchedPig = true;
 } // Slut startGame
 
 // Stoppa spelet
@@ -113,8 +114,10 @@ function stopGame() {
     stopBtn.disabled = true;
 
     /* === Tillägg i uppgiften === */
-    if (pigTimer != null) clearTimeout(pigTimer);
-    pigElem.style.visibility = "hidden";    
+    if (pigTimer != null) {
+        clearTimeout(pigTimer);
+        pigElem.style.visibility = "hidden";
+    }
 } // Slut stopGame
 
 // Kontrollera tangenter och styr bilen. Anropas vid keydown.
@@ -163,40 +166,65 @@ function moveCar() {
 
     /* === Tillägg i uppgiften === */
     checkHit();
-    
 } // Slut moveCar
 
 /* ===== Tillägg av nya funktioner i uppgiften ===== */
-function newPig(){
-    if (pigCounter < 10){
+//Skapar ny vildsvin med en slumpmässig position
+function newPig() {
+    if (pigCounter < 10) {
+        let randomX; //Blir det nya X värdet
+        let randomY; //Blir det nya Y värdet
+        
+        const b = boardElem.getBoundingClientRect();     // Gränsvärden för spelplanen
+        const p = pigElem.getBoundingClientRect();           // Gränsvärden för vildsvinet
+        const boardWidth = b.width; // bredden av spelplanen
+        const boardHeight = b.height; //höjden av spelplanen
+        const pigWidth = p.width; //bredden av vildsvinet
+        const pigHeight = p.height; //höjden av vildsvinet
+        
+        const minDistance = 20; //Minsta tillåtna värdet för koordinater
+
+        const maxX = boardWidth - pigWidth - minDistance * 2; //Sätter max gräns för x koordinat
+        const maxY = boardHeight - pigHeight - minDistance * 2;
+        randomX = Math.floor(Math.random() * maxX + minDistance); //Genererar en slumpmässig position
+        randomY = Math.floor(Math.random() * maxY + minDistance);
+
+        pigElem.style.top = randomY + "px"; //Sätter det nya värdet på top och left
+        pigElem.style.left = randomX + "px";
         pigElem.style.visibility = "visible";
         pigElem.src = "img/pig.png";
         pigCounter++;
-        pigCounterElem = pigCounter;
-        setTimeout(newPig, pigDuration);
+        pigCounterElem.innerText = pigCounter;
         catchedPig = false;
     }
-    else{
+    else {
         stopGame();
     }
-}
-function checkHit(){
+    pigTimer = setTimeout(newPig, pigDuration);
+}//Slut newPig
+
+//Kollar om bilen har träffat en vildsvin
+function checkHit() {
     if (catchedPig) {
         return;
     }
     if (elementsOverlap(pigElem, carElem)) {
-        clearTimeout(setTimeout(newPig, pigDuration));
+        clearTimeout(pigTimer);
         hitCounter++;
         hitCounterElem.innerText = hitCounter;
         pigElem.src = "img/smack.png";
+        
         punchSound.play();
         if (hitCounter == 5) {
             laughSound.play();
         }
+        
         catchedPig = true;
-        setTimeout(newPig, pigDuration);
+        pigTimer = setTimeout(newPig, pigDuration);
     }
-}
+}//slut checkHit
+
+// Kontrollera om två element överlappar varandra
 function elementsOverlap(elem1, elem2) {
     let r1 = elem1.getBoundingClientRect();
     let r2 = elem2.getBoundingClientRect();
@@ -206,4 +234,4 @@ function elementsOverlap(elem1, elem2) {
     else {
         return true;
     }
-}
+}//slut elementsOverlap

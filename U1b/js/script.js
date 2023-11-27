@@ -40,8 +40,10 @@ function startGame() {
     hangmanNr = 0;
     hangmanImg.src = "img/h" + hangmanNr + ".png";
     msgElem.innerText = "";
-    let now = new Date();
+
+    let now = new Date(); //Sparar tiden från när spelet har börjats
     startTime = now.getTime();
+    
     startBtn.disabled = true;
     for (let i = 0; i < letterButtons.length; i++) {
         button = letterButtons[i];
@@ -52,12 +54,13 @@ function startGame() {
 
 // Ord väljs slumpmässigt och skapar span element
 function selectRandomWord() {
-    let oldWord = randomWord;
+    let oldWord = randomWord; // sätter gamla ordet till det gamla slumpmässiga ordet
     while (oldWord == randomWord) {
         let r = Math.floor(wordList.length * Math.random());
         randomWord = wordList[r];
     }
-    let newSpan = "";
+    
+    let newSpan = ""; //lista med span element, återställer till en tom lista
     for (let i = 0; i < randomWord.length; i++) {
         newSpan += "<span></span>";
     }
@@ -70,9 +73,10 @@ function guessLetter() {
     if (hangmanNr == 6) { //Kolla och avsluta funktionen om man har fått 6 fel
         return;
     }
+
     this.disabled = true;
-    let bokstav = this.innerText;
-    let bokstavIx = [];
+    let bokstav = this.innerText; //sätter bokstav till det valda bokstavet
+    let bokstavIx = []; //array med alla bokstaver
     for (let i = 0; i < randomWord.length; i++) { //Går igenom alla bokstäver i hela ordet och kollar om det valda bokstävet finns i ordet
         if (randomWord[i] == bokstav) {
             bokstavIx.push(i); // Sparar indexet i arrayen
@@ -84,7 +88,7 @@ function guessLetter() {
             letterBoxes[bokstavIx[i]].classList.toggle("correctLetter");
             count++;
         }
-        if (count == (randomWord.length)) { //
+        if (count == (randomWord.length)) {
             endGame(false);
             return;
         }
@@ -101,13 +105,14 @@ function guessLetter() {
 //Avslutar spelet och skriver ut tid + rätta ordet
 function endGame(manHanged) {
     startBtn.disabled = false;
-    let now = new Date();
-    let stopTime = now.getTime();
-    let totTime = Math.ceil((stopTime - startTime) / 100) / 10;
+    let now = new Date(); //sparar tiden som spelet avslutas
+    let totTime = Math.ceil((now.getTime() - startTime) / 100) / 10; //räknar ut den totala tiden i sekunder
+    
     for (let i = 0; i < letterButtons.length; i++) {
         button = letterButtons[i];
         button.disabled = true;
     }
+
     if (manHanged) {
         msgElem.innerHTML = ("Tyvärr, gubben hängdes. Rätt svar är " + randomWord + "<br>Det tog " + totTime + " sekunder.");
     }
