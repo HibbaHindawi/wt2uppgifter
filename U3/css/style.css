@@ -82,7 +82,7 @@ main {
 
 /* Klass för att markera att man dragit över en drop zone */
 /* Läggs till eller tas bort från elementet man drar över */
-.hiliteDropZone {
+#board .hiliteDropZone{
     background-color: #9C9;
 }
 
