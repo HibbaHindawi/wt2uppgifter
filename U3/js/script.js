@@ -84,7 +84,7 @@ function newTiles(){
         newTilesDiv[i].innerHTML = randomNmb;
         newTilesDiv[i].draggable = true; //Brickan kan dras
         newTilesDiv[i].addEventListener("dragstart", dragStart);
-        newTilesDiv[i].addEventListener("dragend", dragStart);
+        newTilesDiv[i].addEventListener("dragend", dragEnd);
     }
     currentTiles = 4;
     newTilesBtn.disabled = true;
