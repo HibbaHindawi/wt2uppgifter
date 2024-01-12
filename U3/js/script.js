@@ -93,7 +93,6 @@ function newTiles(){
 // Hanterar en drag-operation
 function dragStart(e){
     dragElem = this; // Det element som dras
-    dragElem.addEventListener("dragend", dragEnd);
     
     for (let i = 0; i < dropZones.length; i++) {
         dropZones[i].addEventListener("dragover", dropZone);
