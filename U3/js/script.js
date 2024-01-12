@@ -15,6 +15,7 @@ let tilesCopy; //Kopierar arrayen
 let totTiles; //Räknar antalet brickor som har genererats
 
 let dragElem; //Element som dras
+let currentTiles; //antalet nya brickor som finns
 
 let points = 0; //Totala poäng efter varje spel
 let currentPoints; //antal poäng för nurvarande spel
